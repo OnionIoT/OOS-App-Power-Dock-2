@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 
+import 'spectre.css/dist/spectre.min.css'
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
