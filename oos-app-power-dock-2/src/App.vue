@@ -79,7 +79,7 @@ export default {
       }
     }.bind(this)
     OnionCDK.onInit = function () {
-      setTimeout(function () {
+      setInterval(function () {
         OnionCDK.sendCmd('getBatteryLevels', [])
       }, 1000 * 60) // Every Minutes
 
