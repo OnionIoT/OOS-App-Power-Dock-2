@@ -33,10 +33,26 @@ export default {
           borderColor: '#2ecc71',
           data: this.getData,
           // hidden: true,
-          label: 'Battery'
+          label: 'Battery Voltage'
         }]
       },
-      options: {}
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            gridLines: {
+              display: false
+            }
+          }],
+          yAxes: [{
+            gridLines: {
+              display: false
+            }
+          }]
+        }
+      }
     })
   },
   computed: {
@@ -57,7 +73,6 @@ export default {
   },
   watch: {
     'data': function (val, oldVal) {
-      console.log('on data change')
       var chart = this.batteryChart
       chart.data.labels = this.getLabels
       chart.data.datasets[0].data = this.getData

@@ -2,11 +2,11 @@
   <div class="">
       <header class="navbar">
         <section class="navbar-section">
-        Power Dock 2: Battery Level Monitory
+        Power Dock 2: Battery Level Monitor
         </section>
-        <button type="button" name="button"
+        <!-- <button type="button" name="button"
           @click="addOne"
-        >Add One</button>
+        >Add One</button> -->
       </header>
 
       <div class="container">
@@ -37,6 +37,7 @@
 
 import BatteryIcon from '@/components/BatteryIcon'
 import LineChart from '@/components/LineChart'
+import OnionCDK from '@/OnionCDK.js'
 
 export default {
   name: 'App',
@@ -51,24 +52,47 @@ export default {
   },
   methods: {
     addOne () {
-      var now = new Date()
-      var volt = (Math.random()) + 3.5
-      this.data.push({time: now.toLocaleTimeString(), voltage: volt})
-      console.log(this.data)
+      // var now = new Date()
+      // var volt = (Math.random()) + 3.5
+      // this.data.push({time: now.toLocaleTimeString(), voltage: volt})
+      OnionCDK.sendCmd('getBatteryLevels', [])
     }
   },
   mounted () {
-    /* eslint-disable no-new */
-    for (var i = 0; i < 24 * 60 / 10; i++) {
-      this.addOne()
+    OnionCDK.onCmd = function (cmd, response) {
+      if (cmd === 'getBatteryLevels') {
+        this.data = []
+        response = response.split('\n')
+        for (var i = 0; i < response.length; i++) {
+          var line = response[i]
+          if (line.length < 1) {
+            continue
+          }
+          var timeStamp = line.split(' daemon.info')[0]
+          var content = line.split(']: ')[1]
+          content = JSON.parse(content)
+          /* eslint-disable no-new */
+          var time = new Date(timeStamp)
+          var timeStr = `${time.getHours()}:${time.getMinutes()}`
+          this.data.push({time: timeStr, voltage: content.voltage})
+        }
+      }
+    }.bind(this)
+    OnionCDK.onInit = function () {
+      setTimeout(function () {
+        OnionCDK.sendCmd('getBatteryLevels', [])
+      }, 1000 * 60) // Every Minutes
+
+      OnionCDK.sendCmd('getBatteryLevels', [])
     }
+    OnionCDK.init()
   },
   computed: {
     currentVoltage () {
       if (this.data.length > 0) {
         return this.data[this.data.length - 1].voltage.toFixed(2)
       } else {
-        return 0
+        return '0'
       }
     }
   }
