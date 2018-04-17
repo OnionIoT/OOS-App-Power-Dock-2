@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="container">
-    <img class="batteryImage" src="/static/img/battery.svg">
+    <img class="batteryImage" src="static/img/battery.svg">
     <div class="levelText">
       {{volt}}V
     </div>
