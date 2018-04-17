@@ -2,7 +2,7 @@
   <div class="container">
     <img class="batteryImage" src="/static/img/battery.svg">
     <div class="levelText">
-      {{percent}}%
+      {{volt}}V
     </div>
   </div>
 </template>
@@ -11,7 +11,7 @@
 export default {
   name: 'BatteryIcon',
   props: {
-    percent: String
+    volt: String
   }
 }
 </script>

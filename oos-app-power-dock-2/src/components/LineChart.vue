@@ -29,6 +29,7 @@ export default {
       data: {
         labels: this.getLabels,
         datasets: [{
+          backgroundColor: '#eafaf1',
           borderColor: '#2ecc71',
           data: this.getData,
           // hidden: true,
@@ -49,7 +50,7 @@ export default {
     getData () {
       var data = []
       for (var i = 0; i < this.data.length; i++) {
-        data.push(this.data[i].percent)
+        data.push(this.data[i].voltage)
       }
       return data
     }
